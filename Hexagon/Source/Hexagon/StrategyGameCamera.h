@@ -37,16 +37,16 @@ protected:
 	UStaticMeshComponent* StaticMeshComp;
 
 	UPROPERTY(EditAnywhere, Category = "Camera")
-	float Speed;
+	float Speed = 10.0f;		// 10.0
 
 	UPROPERTY(EditAnywhere, Category = "Camera")
-	float MaxHeight;
+	float MaxHeight = 1500.0f;	// 1500.0
 
 	UPROPERTY(EditAnywhere, Category = "Camera")
-	float MinHeight;
+	float MinHeight = 200.0f;	// 200.0
 
 	UPROPERTY(EditAnywhere, Category = "Camera")
-	float ZoomFactor;
+	float ZoomFactor = 0.5f;	// 0.5
 
 	//Input variables
 	FVector2D MovementInput;
