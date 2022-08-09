@@ -5,30 +5,53 @@
 #include "Kismet/GameplayStatics.h"
 #include "Tank.h"
 #include "Tower.h"
+#include "ToonTanksPlayerController.h"
 
 void AToonTanksGameMode::BeginPlay()
 {
     Super::BeginPlay();
 
-    Tank = Cast<ATank>(UGameplayStatics::GetPlayerPawn(this, 0));
+    HandleGameStart();
 }
 
 void AToonTanksGameMode::ActorDied(AActor* DeadActor)
 {
-    UE_LOG(LogTemp, Warning, TEXT("ActorDied"));
     if (DeadActor == Tank)
     {
-        UE_LOG(LogTemp, Warning, TEXT("Tank"));
         Tank->HandleDestruction();
-        if (Tank->GetTankPlayerController())
+        if (ToonTanksPlayerController)
         {
-            Tank->DisableInput(Tank->GetTankPlayerController());
-            Tank->GetTankPlayerController()->bShowMouseCursor = false;
+            ToonTanksPlayerController->SetPlayerEnabledState(false);
         }
     }
     else if (ATower* DestroyedTower = Cast<ATower>(DeadActor))
     {
-        UE_LOG(LogTemp, Warning, TEXT("Tower"));
         DestroyedTower->HandleDestruction();
+    }
+}
+
+void AToonTanksGameMode::HandleGameStart()
+{
+    Tank = Cast<ATank>(UGameplayStatics::GetPlayerPawn(this, 0));
+    ToonTanksPlayerController = Cast<AToonTanksPlayerController>(UGameplayStatics::GetPlayerController(this, 0));
+
+    StartGame();
+
+    if (ToonTanksPlayerController)
+    {
+        ToonTanksPlayerController->SetPlayerEnabledState(false);
+
+        FTimerHandle PlayerEnableTimerHandle;
+        FTimerDelegate PlayerEnableTimerDelegate = FTimerDelegate::CreateUObject(
+            ToonTanksPlayerController,
+            &AToonTanksPlayerController::SetPlayerEnabledState,
+            true
+        );
+        GetWorldTimerManager().SetTimer(
+            PlayerEnableTimerHandle,
+            PlayerEnableTimerDelegate,
+            StartDelay,
+            false
+        );
     }
 }
