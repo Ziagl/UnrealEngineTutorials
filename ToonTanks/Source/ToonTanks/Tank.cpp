@@ -65,9 +65,9 @@ void ATank::HandleDestruction()
     Super::HandleDestruction();
 
     // make Tank invisible and deactivate ticking
-    Destroy();
     SetActorHiddenInGame(true);
     SetActorTickEnabled(false);
+    bAlive = false;
 }
 
 void ATank::Move(float Value)
