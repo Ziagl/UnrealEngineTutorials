@@ -76,8 +76,6 @@ void AStrategyGameCamera::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	InputComponent->BindAxis("MoveForward", this, &AStrategyGameCamera::MoveForward);
 	InputComponent->BindAxis("MoveLeft", this, &AStrategyGameCamera::MoveLeft);
 	InputComponent->BindAxis("Zoom", this, &AStrategyGameCamera::Zoom);
-	/*InputComponent->BindAxis("CameraPitch", this, &AStrategyGameCamera::PitchCamera);
-	InputComponent->BindAxis("CameraYaw", this, &AStrategyGameCamera::YawCamera);*/
 }
 
 //Input functions
